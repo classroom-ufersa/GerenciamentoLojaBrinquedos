@@ -9,7 +9,8 @@ struct brinquedo{
     int idSessao;
 };
 
-Brinquedo * contaBrinquedos(int * qtdBrinquedos){
+void contaBrinquedos(int * qtdBrinquedos){
+    *qtdBrinquedos = 0;
     int c;
     FILE * dataBase = fopen("../data/database.txt", "r");
     if (dataBase == NULL){
@@ -23,7 +24,10 @@ Brinquedo * contaBrinquedos(int * qtdBrinquedos){
         }
     }
     fclose(dataBase);
+}
 
+Brinquedo * criaLista(int * qtdBrinquedos){
+    contaBrinquedos(qtdBrinquedos);
     Brinquedo * brinquedos = (Brinquedo*) malloc((*qtdBrinquedos) * sizeof(Brinquedo));  
     if(brinquedos == NULL){
         printf("Falha na alocação de memória.\n");

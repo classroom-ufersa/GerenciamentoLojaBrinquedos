@@ -3,7 +3,9 @@
 
 typedef struct brinquedo Brinquedo;
 
-Brinquedo * contaBrinquedos(int * qtdBrinquedos);
+void contaBrinquedos(int * qtdBrinquedos);
+
+Brinquedo * criaLista(int * qtdBrinquedos);
 
 void preencheDados(Brinquedo * brinquedos, int qtdBrinquedos);
 

@@ -13,7 +13,7 @@ struct brinquedo{
 int main(void){
     int qtdBrinquedos = 0;
 
-    Brinquedo * brinquedos = contaBrinquedos(&qtdBrinquedos);
+    Brinquedo * brinquedos = criaLista(&qtdBrinquedos);
     if (brinquedos == NULL){
         printf("Falha na alocação de memória.\n");
         exit(1);
@@ -25,6 +25,7 @@ int main(void){
     }
     
     addBrinquedo(&qtdBrinquedos);
+    contaBrinquedos(&qtdBrinquedos);
 
     brinquedos = realloc(brinquedos, qtdBrinquedos * sizeof(Brinquedo));
     if (brinquedos == NULL){

@@ -14,7 +14,7 @@ void contaBrinquedos(int * qtdBrinquedos){
     int c;
     FILE * dataBase = fopen("../data/database.txt", "r");
     if (dataBase == NULL){
-        printf("Nao foi possivel abrir o arquivo\n");
+        printf("### Nao foi possivel abrir o arquivo! ###\n");
         exit(1);
     }
 
@@ -30,7 +30,7 @@ Brinquedo * criaLista(int * qtdBrinquedos){
     contaBrinquedos(qtdBrinquedos);
     Brinquedo * brinquedos = (Brinquedo*) malloc((*qtdBrinquedos) * sizeof(Brinquedo));  
     if(brinquedos == NULL){
-        printf("Falha na alocação de memória.\n");
+        printf("### Falha na alocacao de memoria! ###\n");
         return NULL;
     }
 
@@ -40,7 +40,7 @@ Brinquedo * criaLista(int * qtdBrinquedos){
 void preencheDados(Brinquedo * brinquedos, int qtdBrinquedos){
     FILE * dataBase = fopen("../data/database.txt", "r");
     if (dataBase == NULL){
-        printf("Nao foi possivel abrir o arquivo\n");
+        printf("### Nao foi possivel abrir o arquivo! ###\n");
         exit(1);
     }
     int i = 0;
@@ -53,7 +53,7 @@ void preencheDados(Brinquedo * brinquedos, int qtdBrinquedos){
 
 void addBrinquedo(int * qtdBrinquedos){
     Brinquedo aux;
-    printf("CADATRO DE BRINQUEDO\n");
+    printf("--- CADATRO DE BRINQUEDO ---\n");
     printf("Digite o nome: ");
     scanf(" %[^\n]", aux.nome);
     printf("Digite a faixa etaria (idade minima - idade max): ");
@@ -67,7 +67,7 @@ void addBrinquedo(int * qtdBrinquedos){
     ++(*qtdBrinquedos);
     FILE * dataBase = fopen("../data/database.txt", "a");
     if (dataBase == NULL){
-        printf("Nao foi possivel abrir o arquivo\n");
+        printf("### Nao foi possivel abrir o arquivo! ###\n");
         exit(1);
     }
     fprintf(dataBase, "%s\t%d-%d\t%.2f\t%d\t%d\n", aux.nome, aux.idadeMin, aux.idadeMax, aux.preco, aux.qtdEstoque,aux.idSessao);
@@ -84,7 +84,7 @@ void ordenaNome(Brinquedo * brinquedos, int qtdBrinquedos){
 
     FILE * dataBase = fopen("../data/database.txt", "w");
     if (dataBase == NULL){
-        printf("Nao foi possivel abrir o arquivo\n");
+        printf("### Nao foi possivel abrir o arquivo! ###\n");
         exit(1);
     }
     int count = 0;
@@ -116,7 +116,7 @@ int buscaBrinquedo(Brinquedo * brinquedos, int qtdBrinquedos, char * nome) {
         }
 
         if(!verificador){
-            printf("nao encontrado\n");
+            printf("### Brinquedo nao encontrado ###\n");
             return -1;
         }
     }
@@ -124,16 +124,16 @@ int buscaBrinquedo(Brinquedo * brinquedos, int qtdBrinquedos, char * nome) {
 
 void alteraEstoque(Brinquedo * brinquedos, int qtdBrinquedos){
     char opcao[50];
-    printf("ALTERACAO DE ESTOQUE\n");
-    printf("digite o nome do brinquedo: ");
+    printf("\n--- ALTERACAO DE ESTOQUE--- \n");
+    printf("Digite o nome do brinquedo: ");
     scanf(" %[^\n]", opcao);
     int indice = buscaBrinquedo(brinquedos, qtdBrinquedos, opcao);
-    printf("insira a nova quantidade de %s no estoque: ", brinquedos[indice].nome);
+    printf("Insira a nova quantidade de %s no estoque: ", brinquedos[indice].nome);
     scanf(" %d", &brinquedos[indice].qtdEstoque);
 
     FILE * dataBase = fopen("../data/database.txt", "w");
     if (dataBase == NULL){
-        printf("Nao foi possivel abrir o arquivo\n");
+        printf("### Nao foi possivel abrir o arquivo! ###\n");
         exit(1);
     }
     int count = 0;

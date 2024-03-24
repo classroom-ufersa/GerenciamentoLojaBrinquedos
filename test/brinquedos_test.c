@@ -15,11 +15,11 @@ int main(void){
 
     Brinquedo * brinquedos = criaLista(&qtdBrinquedos);
     if (brinquedos == NULL){
-        printf("Falha na alocação de memória.\n");
+        printf("### Falha na alocacao de memoria. ### \n");
         exit(1);
     }
     preencheDados(brinquedos, qtdBrinquedos);
-    printf("\nprimeiro: %d brinq\n", qtdBrinquedos);
+    printf("\n-- Primeiro: %d brinquedos\n", qtdBrinquedos);
     for (int i = 0; i < qtdBrinquedos; i++){
         printf("%s\t%d-%d\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
     }
@@ -29,24 +29,24 @@ int main(void){
 
     brinquedos = realloc(brinquedos, qtdBrinquedos * sizeof(Brinquedo));
     if (brinquedos == NULL){
-        printf("Falha na alocação de memória.\n");
+        printf("### Falha na alocacao de memoria. ###\n");
         exit(1);
     }
     preencheDados(brinquedos, qtdBrinquedos);
-    printf("\nsegudo: %d brinq\n", qtdBrinquedos);
+    printf("\n-- Segundo: %d brinquedos\n", qtdBrinquedos);
     for (int i = 0; i < qtdBrinquedos; i++){
         printf("%s\t%d-%d\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
     }
     
    ordenaNome(brinquedos, qtdBrinquedos);
-    printf("\nordenados: %d brinq\n", qtdBrinquedos);
+    printf("\n-- Ordenados: %d brinquedos\n", qtdBrinquedos);
     for (int i = 0; i < qtdBrinquedos; i++){
         printf("%s\t%d-%d\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
     }
 
     alteraEstoque(brinquedos, qtdBrinquedos);
     
-    printf("\nestoque alterado: %d brinq\n", qtdBrinquedos);
+    printf("\n-- Estoque alterado: %d brinquedos\n", qtdBrinquedos);
     for (int i = 0; i < qtdBrinquedos; i++){
         printf("%s\t%d-%d\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
     }

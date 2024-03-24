@@ -2,7 +2,7 @@
 #include "../include/sessao.h"
 
 struct brinquedo{
-    char nome[25];
+    char nome[50];
     int idadeMax;
     int idadeMin;
     float preco;
@@ -19,7 +19,7 @@ int main(void){
         exit(1);
     }
     preencheDados(brinquedos, qtdBrinquedos);
-    printf("primeiro: %d brinq\n", qtdBrinquedos);
+    printf("\nprimeiro: %d brinq\n", qtdBrinquedos);
     for (int i = 0; i < qtdBrinquedos; i++){
         printf("%s\t%d-%d\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
     }
@@ -33,11 +33,23 @@ int main(void){
         exit(1);
     }
     preencheDados(brinquedos, qtdBrinquedos);
-    printf("segudo: %d brinq\n", qtdBrinquedos);
+    printf("\nsegudo: %d brinq\n", qtdBrinquedos);
     for (int i = 0; i < qtdBrinquedos; i++){
         printf("%s\t%d-%d\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
     }
     
+   ordenaNome(brinquedos, qtdBrinquedos);
+    printf("\nordenados: %d brinq\n", qtdBrinquedos);
+    for (int i = 0; i < qtdBrinquedos; i++){
+        printf("%s\t%d-%d\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
+    }
+
+    alteraEstoque(brinquedos, qtdBrinquedos);
+    
+    printf("\nestoque alterado: %d brinq\n", qtdBrinquedos);
+    for (int i = 0; i < qtdBrinquedos; i++){
+        printf("%s\t%d-%d\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
+    }
     free(brinquedos);
     return 0;
 }

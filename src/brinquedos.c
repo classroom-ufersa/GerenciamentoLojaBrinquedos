@@ -45,7 +45,7 @@ void preencheDados(Brinquedo * brinquedos, int qtdBrinquedos){
     }
     int i = 0;
      while(i < qtdBrinquedos){
-        fscanf(dataBase, " %[^\t]\t%d-%d\t%f\t%d\t%d\n", brinquedos[i].nome, &brinquedos[i].idadeMin, &brinquedos[i].idadeMax, &brinquedos[i].preco, &brinquedos[i].qtdEstoque, &brinquedos[i].idSessao);
+        fscanf(dataBase, " %[^\t]\t%d-%d anos\t%f\t%d\t%d\n", brinquedos[i].nome, &brinquedos[i].idadeMin, &brinquedos[i].idadeMax, &brinquedos[i].preco, &brinquedos[i].qtdEstoque, &brinquedos[i].idSessao);
         i++;
     }
     fclose(dataBase);
@@ -57,20 +57,22 @@ void addBrinquedo(int * qtdBrinquedos){
     printf("Digite o nome: ");
     scanf(" %[^\n]", aux.nome);
     printf("Digite a faixa etaria (idade minima - idade max): ");
-    scanf("%d %d", &aux.idadeMin, &aux.idadeMax);
+    isNumInt(&aux.idadeMin);
+    isNumInt(&aux.idadeMax);
     printf("Digite o valor: ");
-    scanf("%f", &aux.preco);
+    isNumFloat(&aux.preco);
     printf("Digite a quantidade em estoque: ");
-    scanf("%d", &aux.qtdEstoque);
+    isNumInt(&aux.qtdEstoque);
     printf("Digite a qual sessao ele pertence: ");
-    scanf("%d", &aux.idSessao);
+    isNumInt(&aux.idSessao);
     ++(*qtdBrinquedos);
+
     FILE * dataBase = fopen("../data/database.txt", "a");
     if (dataBase == NULL){
         printf("### Nao foi possivel abrir o arquivo! ###\n");
         exit(1);
     }
-    fprintf(dataBase, "%s\t%d-%d\t%.2f\t%d\t%d\n", aux.nome, aux.idadeMin, aux.idadeMax, aux.preco, aux.qtdEstoque,aux.idSessao);
+    fprintf(dataBase, "%s\t%d-%d anos\t%.2f\t%d\t%d\n", aux.nome, aux.idadeMin, aux.idadeMax, aux.preco, aux.qtdEstoque,aux.idSessao);
     fclose(dataBase);
 }
 
@@ -89,7 +91,7 @@ void ordenaNome(Brinquedo * brinquedos, int qtdBrinquedos){
     }
     int count = 0;
     while (count != qtdBrinquedos){
-        fprintf(dataBase, "%s\t%d-%d\t%.2f\t%d\t%d\n", brinquedos[count].nome, brinquedos[count].idadeMin, brinquedos[count].idadeMax, brinquedos[count].preco, brinquedos[count].qtdEstoque,brinquedos[count].idSessao);
+        fprintf(dataBase, "%s\t%d-%d anos\t%.2f\t%d\t%d\n", brinquedos[count].nome, brinquedos[count].idadeMin, brinquedos[count].idadeMax, brinquedos[count].preco, brinquedos[count].qtdEstoque,brinquedos[count].idSessao);
         count++;
     }
     
@@ -100,36 +102,36 @@ int buscaBrinquedo(Brinquedo * brinquedos, int qtdBrinquedos, char * nome) {
     ordenaNome(brinquedos, qtdBrinquedos);
     int max = qtdBrinquedos - 1;
     int min = 0;
-    int meio = 0;
-    int verificador = 0;
-    while (min <= max && strcmp(brinquedos[meio].nome, nome) != 0 ){
+    int meio;
+    while (min <= max){
         meio = (min + max)/2;
         int comparacao = strcmp(brinquedos[meio].nome, nome);
 
         if(comparacao == 0){
-            verificador = 1;
             return meio;
         }else if(comparacao > 0){
             max = meio - 1;
         }else{
             min = meio + 1;
         }
-
-        if(!verificador){
-            printf("### Brinquedo nao encontrado ###\n");
-            return -1;
-        }
     }
+    printf("### Brinquedo nao encontrado ###\n");
+    return qtdBrinquedos;
 }
+
 
 void alteraEstoque(Brinquedo * brinquedos, int qtdBrinquedos){
     char opcao[50];
+    int indice;
     printf("\n--- ALTERACAO DE ESTOQUE--- \n");
     printf("Digite o nome do brinquedo: ");
-    scanf(" %[^\n]", opcao);
-    int indice = buscaBrinquedo(brinquedos, qtdBrinquedos, opcao);
+    do{
+        scanf(" %[^\n]", opcao);
+        indice = buscaBrinquedo(brinquedos, qtdBrinquedos, opcao);
+    }while (indice >= qtdBrinquedos);
+
     printf("Insira a nova quantidade de %s no estoque: ", brinquedos[indice].nome);
-    scanf(" %d", &brinquedos[indice].qtdEstoque);
+    isNumInt(&brinquedos[indice].qtdEstoque);
 
     FILE * dataBase = fopen("../data/database.txt", "w");
     if (dataBase == NULL){
@@ -138,9 +140,50 @@ void alteraEstoque(Brinquedo * brinquedos, int qtdBrinquedos){
     }
     int count = 0;
     while (count != qtdBrinquedos){
-        fprintf(dataBase, "%s\t%d-%d\t%.2f\t%d\t%d\n", brinquedos[count].nome, brinquedos[count].idadeMin, brinquedos[count].idadeMax, brinquedos[count].preco, brinquedos[count].qtdEstoque,brinquedos[count].idSessao);
+        fprintf(dataBase, "%s\t%d-%d anos\t%.2f\t%d\t%d\n", brinquedos[count].nome, brinquedos[count].idadeMin, brinquedos[count].idadeMax, brinquedos[count].preco, brinquedos[count].qtdEstoque,brinquedos[count].idSessao);
         count++;
     }
     fclose(dataBase);
     printf("Estoque alterado!\n");
+}
+
+void isNumInt(int * valor){
+    char str[20];
+    int validador;
+
+    do {
+        scanf(" %[^\n]", str);
+        validador = verificarDados(str);
+        while (getchar() != '\n');
+        if(validador){
+            printf("Entrada invalida. Por favor, insira um numero inteiro: ");
+        }
+    } while(validador);
+
+    *valor = atoi(str);
+}
+
+void isNumFloat(float * valor){
+    char str[20];
+    int validador;
+    char *endptr;
+
+    do {
+        scanf(" %[^\n]", str);
+        validador = verificarDados(str);
+        while (getchar() != '\n');
+        if(validador){
+            printf("Entrada invalida. Por favor, insira um numero flutuante: ");
+        }
+    } while(validador);
+
+    *valor = strtof(str, &endptr);
+}
+
+int verificarDados(const char *str){
+    for(int i = 0; str[i] != '\0'; i++){
+        if(!isdigit(str[i]) && str[i] != '\n' && str[i] != '.'){
+            return 1;
+        }
+    }
 }

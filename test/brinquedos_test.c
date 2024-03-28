@@ -50,6 +50,12 @@ int main(void){
     for (int i = 0; i < qtdBrinquedos; i++){
         printf("%s\t%d-%d anos\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
     }
+
+    removeBrinquedo(brinquedos, &qtdBrinquedos);
+    printf("\n-- removidos: %d brinquedos\n", qtdBrinquedos);
+    for (int i = 0; i < qtdBrinquedos; i++){
+        printf("%s\t%d-%d anos\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
+    }
     free(brinquedos);
 
     return 0;

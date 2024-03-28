@@ -17,6 +17,8 @@ int comparaNome(const void * p1, const void * p2);
 
 void ordenaNome(Brinquedo * brinquedos, int qtdBrinquedos);
 
+void removeBrinquedo(Brinquedo * brinquedos, int * qtdBrinquedos);
+
 void alteraEstoque(Brinquedo * brinquedos, int qtdBrinquedos);
 
 void isNumInt(int * valor);

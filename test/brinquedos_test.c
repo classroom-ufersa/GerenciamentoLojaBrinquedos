@@ -21,7 +21,7 @@ int main(void){
     preencheDados(brinquedos, qtdBrinquedos);
     printf("\n-- Primeiro: %d brinquedos\n", qtdBrinquedos);
     for (int i = 0; i < qtdBrinquedos; i++){
-        printf("%s\t%d-%d\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
+        printf("%s\t%d-%d anos\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
     }
     
     addBrinquedo(&qtdBrinquedos);
@@ -35,21 +35,28 @@ int main(void){
     preencheDados(brinquedos, qtdBrinquedos);
     printf("\n-- Segundo: %d brinquedos\n", qtdBrinquedos);
     for (int i = 0; i < qtdBrinquedos; i++){
-        printf("%s\t%d-%d\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
+        printf("%s\t%d-%d anos\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
     }
     
    ordenaNome(brinquedos, qtdBrinquedos);
     printf("\n-- Ordenados: %d brinquedos\n", qtdBrinquedos);
     for (int i = 0; i < qtdBrinquedos; i++){
-        printf("%s\t%d-%d\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
+        printf("%s\t%d-%d anos\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
     }
 
     alteraEstoque(brinquedos, qtdBrinquedos);
     
     printf("\n-- Estoque alterado: %d brinquedos\n", qtdBrinquedos);
     for (int i = 0; i < qtdBrinquedos; i++){
-        printf("%s\t%d-%d\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
+        printf("%s\t%d-%d anos\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
+    }
+
+    removeBrinquedo(brinquedos, &qtdBrinquedos);
+    printf("\n-- removidos: %d brinquedos\n", qtdBrinquedos);
+    for (int i = 0; i < qtdBrinquedos; i++){
+        printf("%s\t%d-%d anos\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
     }
     free(brinquedos);
+
     return 0;
 }

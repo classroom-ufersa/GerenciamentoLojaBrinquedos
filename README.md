@@ -27,6 +27,8 @@ Aqui estao algumas funcionalidades disponíveis:
 
     - `Sair do programa:` Finaliza a execução do sistema; 
 
+___
+
 ## **Organização do Repositório**
 ```
 📁 - GerenciamentoLojaBrinquedos
@@ -51,15 +53,39 @@ Aqui estao algumas funcionalidades disponíveis:
 └───README.md
 ```
 
-## **Tecnologias Utilizadas**
+### **Tecnologias utilizadas**
+___
 
-```
-```
+![c](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)
+
+
 ## **Execução do projeto**
+- Certifique-se de que você possui algum compilador C em sua máquina. Recomendamos o uso do GCC para compilar o código.
 ```
+gcc -o mainSes.exe ..\src\brinquedos.c ..\src\sessao.c .\sessoes_test.c
 ```
-## **Desenvolvedores e contribuidores** 
-```
-```
+## **Participantes** 
 
 
+<table align="center">
+  <tr>    
+    <td align="center">
+      <a href="https://github.com/Difierro">
+        <img src="https://github.com/classroom-ufersa/GerenciamentoLojaBrinquedos/assets/114101163/e9b27183-9c24-4a17-a2e1-5acdcc39c8d4" 
+        width="120px;" alt="Foto de Gustavo Rodrigues"/><br>
+        <sub>
+          <b>Gustavo Rodrigues</b>
+         </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/euduar-da">
+        <img src="https://github.com/classroom-ufersa/GerenciamentoLojaBrinquedos/assets/114101163/8faa38fe-6027-4aa7-939b-bf10de1534cd" 
+        width="120px;" alt="Foto de Eduarda Souza no GitHub"/><br>
+        <sub>
+          <b>Eduarda Souza</b>
+         </sub>
+      </a>
+    </td>
+  </tr>
+</table>

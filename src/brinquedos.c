@@ -1,4 +1,5 @@
 #include "../include/brinquedos.h"
+#include "../include/sessao.h"
 
 struct brinquedo{
     char nome[50];
@@ -7,6 +8,13 @@ struct brinquedo{
     float preco;
     int qtdEstoque;
     int idSessao;
+};
+
+struct sessao{
+    int id;
+    char categoria[25];
+    Sessao * prox;
+    Sessao * ant;
 };
 
 void contaBrinquedos(int * qtdBrinquedos){
@@ -33,11 +41,11 @@ Brinquedo * criaLista(int * qtdBrinquedos){
         printf("### Falha na alocacao de memoria! ###\n");
         return NULL;
     }
-
+    
     return brinquedos; 
 }
 
-void preencheDados(Brinquedo * brinquedos, int qtdBrinquedos){
+Brinquedo * preencheDadosBrinquedos(Brinquedo * brinquedos, int qtdBrinquedos){
     FILE * dataBase = fopen("../data/database.txt", "r");
     if (dataBase == NULL){
         printf("### Nao foi possivel abrir o arquivo! ###\n");
@@ -49,15 +57,44 @@ void preencheDados(Brinquedo * brinquedos, int qtdBrinquedos){
         i++;
     }
     fclose(dataBase);
+    return brinquedos;
 }
 
-void addBrinquedo(int * qtdBrinquedos){
+void imprimeBrinquedos(Brinquedo * brinquedos, int qtdBrinquedos){
+    if(qtdBrinquedos == 0){
+        printf("Nao ha brinquedos cadastrados!\n");
+    }else{
+        printf("NOME    FAIXA           PRECO  ESTOQUE SESSAO\n");
+        for (int i = 0; i < qtdBrinquedos; i++){
+            printf("%s\t%d-%d anos\t%.2f\t%d\t%d\n", brinquedos[i].nome, brinquedos[i].idadeMin, brinquedos[i].idadeMax, brinquedos[i].preco, brinquedos[i].qtdEstoque, brinquedos[i].idSessao);
+        }
+    }
+}
+
+void imprimeBrinquedoDatabase(Brinquedo * brinquedos, int qtdBrinquedos){
+    FILE * dataBase = fopen("../data/database.txt", "w");
+    if (dataBase == NULL){
+        printf("### Nao foi possivel abrir o arquivo! ###\n");
+        exit(1);
+    }
+    int count = 0;
+    while (count != qtdBrinquedos){
+        fprintf(dataBase, "%s\t%d-%d anos\t%.2f\t%d\t%d\n", brinquedos[count].nome, brinquedos[count].idadeMin, brinquedos[count].idadeMax, brinquedos[count].preco, brinquedos[count].qtdEstoque,brinquedos[count].idSessao);
+        count++;
+    }
+    
+    fclose(dataBase);
+}
+
+void addBrinquedo(int * qtdBrinquedos, Sessao * sessoes){//falta checar se a sessao existe, e listar as qie existe
     Brinquedo aux;
     printf("--- CADATRO DE BRINQUEDO ---\n");
     printf("Digite o nome: ");
     scanf(" %[^\n]", aux.nome);
-    printf("Digite a faixa etaria (idade minima - idade max): ");
+    printf("Digite a faixa etaria: \n");
+    printf("idade minima: ");
     isNumInt(&aux.idadeMin);
+    printf("idade maxima: ");
     isNumInt(&aux.idadeMax);
     printf("Digite o valor: ");
     isNumFloat(&aux.preco);
@@ -66,7 +103,6 @@ void addBrinquedo(int * qtdBrinquedos){
     printf("Digite a qual sessao ele pertence: ");
     isNumInt(&aux.idSessao);
     ++(*qtdBrinquedos);
-
     FILE * dataBase = fopen("../data/database.txt", "a");
     if (dataBase == NULL){
         printf("### Nao foi possivel abrir o arquivo! ###\n");
@@ -84,18 +120,18 @@ int comparaNome(const void * p1, const void * p2){
 void ordenaNome(Brinquedo * brinquedos, int qtdBrinquedos){
     qsort(brinquedos, qtdBrinquedos, sizeof(Brinquedo), comparaNome);
 
-    FILE * dataBase = fopen("../data/database.txt", "w");
-    if (dataBase == NULL){
-        printf("### Nao foi possivel abrir o arquivo! ###\n");
-        exit(1);
-    }
-    int count = 0;
-    while (count != qtdBrinquedos){
-        fprintf(dataBase, "%s\t%d-%d anos\t%.2f\t%d\t%d\n", brinquedos[count].nome, brinquedos[count].idadeMin, brinquedos[count].idadeMax, brinquedos[count].preco, brinquedos[count].qtdEstoque,brinquedos[count].idSessao);
-        count++;
-    }
-    
-    fclose(dataBase);
+    imprimeBrinquedoDatabase(brinquedos, qtdBrinquedos);
+}
+
+int comparaId(const void * p1, const void * p2){
+   const Brinquedo * pa = p1;
+   const Brinquedo * pb = p2;
+   return pa->idSessao - pb->idSessao;
+}
+void ordenaId(Brinquedo * brinquedos, int qtdBrinquedos){
+    qsort(brinquedos, qtdBrinquedos, sizeof(Brinquedo), comparaId);
+
+    imprimeBrinquedoDatabase(brinquedos, qtdBrinquedos);
 }
 
 int buscaBrinquedo(Brinquedo * brinquedos, int qtdBrinquedos, char * nome) {
@@ -119,42 +155,49 @@ int buscaBrinquedo(Brinquedo * brinquedos, int qtdBrinquedos, char * nome) {
     return qtdBrinquedos;
 }
 
-void removeBrinquedo(Brinquedo * brinquedos, int * qtdBrinquedos){
-    char opcao[50];
-    int indice, i;
-    printf("\n--- REMOCAO DE BRINQUEDO --- \n");
-    printf("Digite o nome do brinquedo: ");
-    do{
-        scanf(" %[^\n]", opcao);
-        indice = buscaBrinquedo(brinquedos, (*qtdBrinquedos), opcao);
-    }while (indice >= (*qtdBrinquedos));
-
-    for(i = indice; i < (*qtdBrinquedos) - 1; i++){
+Brinquedo * removeBrinquedo(Brinquedo * brinquedos, int * qtdBrinquedos, int indiceBrinquedo){
+    int i;
+    for(i = indiceBrinquedo; i < (*qtdBrinquedos) - 1; i++){
         brinquedos[i] = brinquedos[i+1];
     }
     --(*qtdBrinquedos);
+    
     brinquedos = realloc(brinquedos, (*qtdBrinquedos) * sizeof(Brinquedo));
-
-    FILE * dataBase = fopen("../data/database.txt", "w");
-    if (dataBase == NULL){
-        printf("### Nao foi possivel abrir o arquivo! ###\n");
-        exit(1);
-    }
-    int count = 0;
-    while (count != (*qtdBrinquedos)){
-        fprintf(dataBase, "%s\t%d-%d anos\t%.2f\t%d\t%d\n", brinquedos[count].nome, brinquedos[count].idadeMin, brinquedos[count].idadeMax, brinquedos[count].preco, brinquedos[count].qtdEstoque,brinquedos[count].idSessao);
-        count++;
-    }
-    
-    fclose(dataBase);
-    
+    imprimeBrinquedoDatabase(brinquedos, (*qtdBrinquedos));
+    return brinquedos;
 }
 
+Brinquedo * removeBrinquedoSessao(Brinquedo * brinquedos, int qtdBrinquedos, int idDesejado){
+    ordenaId(brinquedos, qtdBrinquedos);
+    int i =0;
+    int inicio= 0;
+    
+    for(i = 0; i < qtdBrinquedos; i++){
+        if (brinquedos[i].idSessao == idDesejado){
+            inicio = i;
+            break;
+        }
+    }
+
+    while (brinquedos[inicio].idSessao == idDesejado){
+        brinquedos = removeBrinquedo(brinquedos, &qtdBrinquedos, inicio);
+    }
+
+    for (i = 0; i < qtdBrinquedos; i++){
+        if (brinquedos[i].idSessao >= idDesejado){
+            --(brinquedos[i].idSessao);
+        }
+    }
+    imprimeBrinquedoDatabase(brinquedos, qtdBrinquedos);
+
+}
 
 void alteraEstoque(Brinquedo * brinquedos, int qtdBrinquedos){
     char opcao[50];
     int indice;
     printf("\n--- ALTERACAO DE ESTOQUE--- \n");
+    printf("Brinquedos disponiveis: \n");
+    imprimeBrinquedos(brinquedos, qtdBrinquedos);
     printf("Digite o nome do brinquedo: ");
     do{
         scanf(" %[^\n]", opcao);
@@ -164,17 +207,7 @@ void alteraEstoque(Brinquedo * brinquedos, int qtdBrinquedos){
     printf("Insira a nova quantidade de %s no estoque: ", brinquedos[indice].nome);
     isNumInt(&brinquedos[indice].qtdEstoque);
 
-    FILE * dataBase = fopen("../data/database.txt", "w");
-    if (dataBase == NULL){
-        printf("### Nao foi possivel abrir o arquivo! ###\n");
-        exit(1);
-    }
-    int count = 0;
-    while (count != qtdBrinquedos){
-        fprintf(dataBase, "%s\t%d-%d anos\t%.2f\t%d\t%d\n", brinquedos[count].nome, brinquedos[count].idadeMin, brinquedos[count].idadeMax, brinquedos[count].preco, brinquedos[count].qtdEstoque,brinquedos[count].idSessao);
-        count++;
-    }
-    fclose(dataBase);
+    imprimeBrinquedoDatabase(brinquedos, qtdBrinquedos);
     printf("Estoque alterado!\n");
 }
 
@@ -218,3 +251,4 @@ int verificarDados(const char *str){
         }
     }
 }
+

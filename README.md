@@ -15,7 +15,7 @@ Aqui estao algumas funcionalidades disponíveis:
 
     - `Remover Sessão:` Remove uma sessão do Sistema de Gerenciamento;
 
-    - `Adicionar Brinquedo:` Adiciona um novo brinquedo em uma sessão já existente;
+    - `Adicionar Brinquedo:` Adiciona um novo brinquedo em uma sessão;
 
     - `Remover brinquedo:` Remove um brinquedo do Sistema de Gerenciamento; 
 

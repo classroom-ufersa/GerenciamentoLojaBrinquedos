@@ -15,7 +15,7 @@ void imprimeBrinquedos(Brinquedo * brinquedos, int qtdBrinquedos);
 
 void imprimeBrinquedoDatabase(Brinquedo * brinquedos, int qtdBrinquedos);
 
-Brinquedo * addBrinquedo(int * qtdBrinquedos, Brinquedo * brinquedos);
+Brinquedo * addBrinquedo(int * qtdBrinquedos, Brinquedo * brinquedos, int qtdSessao);
 
 int comparaNome(const void * p1, const void * p2);
 
@@ -40,3 +40,5 @@ void isNumFloat(float * valor);
 int verificarDados(const char *str);
 
 void limpaTela(void);
+
+void stringMinuscula(char *Nome);

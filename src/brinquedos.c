@@ -10,7 +10,6 @@ struct brinquedo{
     int idSessao;
 };
 
-
 void contaBrinquedos(int * qtdBrinquedos){
     *qtdBrinquedos = 0;
     int c;
@@ -80,11 +79,12 @@ void imprimeBrinquedoDatabase(Brinquedo * brinquedos, int qtdBrinquedos){
     fclose(dataBase);
 }
 
-Brinquedo * addBrinquedo(int * qtdBrinquedos,Brinquedo * brinquedos){//falta checar se a sessao existe, e listar as qie existe
+Brinquedo * addBrinquedo(int * qtdBrinquedos,Brinquedo * brinquedos, int qtdSessao){
     Brinquedo aux;
     printf("--- CADATRO DE BRINQUEDO ---\n");
     printf("Digite o nome: ");
     scanf(" %[^\n]", aux.nome);
+    stringMinuscula(aux.nome);
     printf("Digite a faixa etaria: \n");
     printf("idade minima: ");
     isNumInt(&aux.idadeMin);
@@ -95,7 +95,12 @@ Brinquedo * addBrinquedo(int * qtdBrinquedos,Brinquedo * brinquedos){//falta che
     printf("Digite a quantidade em estoque: ");
     isNumInt(&aux.qtdEstoque);
     printf("Digite a qual sessao ele pertence: ");
-    isNumInt(&aux.idSessao);
+    do{
+        isNumInt(&aux.idSessao);
+        if(aux.idSessao > qtdSessao || aux.idSessao <= 0){
+            printf("Selecione uma sessao existente:\n");
+        }
+    }while(aux.idSessao > qtdSessao || aux.idSessao <= 0 );
     ++(*qtdBrinquedos);
     FILE * dataBase = fopen("../data/database.txt", "a");
     if (dataBase == NULL){
@@ -256,4 +261,11 @@ void limpaTela(void){
     #else
         system("clear");
     #endif
+}
+
+void stringMinuscula(char *Nome){ 
+  int Contador; 
+  for (Contador = 0; Nome[Contador] != '\0'; Contador++)  { 
+    Nome[Contador] = tolower(Nome[Contador]); 
+  }
 }

@@ -1,0 +1,6 @@
+baralho	15-18 anos	15.00	10	3
+bola	2-10 anos	32.00	27	1
+boneca	2-10 anos	25.00	35	1
+chocalho	0-2 anos	39.00	33	2
+ludo	8-15 anos	22.00	12	3
+mordedor	0-2 anos	15.00	11	2

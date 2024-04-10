@@ -252,3 +252,10 @@ int verificarDados(const char *str){
     }
 }
 
+void limpaTela(void){
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}

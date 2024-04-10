@@ -40,3 +40,5 @@ void isNumInt(int * valor);
 void isNumFloat(float * valor);
 
 int verificarDados(const char *str);
+
+void limpaTela(void);

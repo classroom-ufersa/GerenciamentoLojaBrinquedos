@@ -2,20 +2,12 @@
 #include "../include/brinquedos.h"
 
 struct sessao{
-    int id; //info
-    char categoria[25]; //info
+    int id;
+    char categoria[25];
     Sessao * prox;
     Sessao * ant;
 };
-struct brinquedo{
-    char nome[50];
-    int idadeMax;
-    int idadeMin;
-    float preco;
-    int qtdEstoque;
-    int idSessao;
-    char categoriaSessao[25];
-};
+
 
 Sessao * criaListaSessao(void){
     return NULL;
@@ -109,25 +101,24 @@ void imprimeDatabase(Sessao * sessoes){
 }
 
 Sessao * adicionaSessao(Sessao * sessoes, int * qtdSessoes){
+    printf("--- CADASTRO DE SESSAO ---\n");
     Sessao * aux = (Sessao*) malloc(sizeof(Sessao));
-    printf("Insira o nome da sessão: ");
-    scanf( "%[^\n]", aux->categoria);
+    printf("Insira o nome da sessao: ");
+    scanf(" %[^\n]", aux->categoria);
+    stringMinuscula(aux->categoria);
     aux->id = sessoes->id + 1;
     sessoes = preencheNo(sessoes, aux);
     ++(*qtdSessoes);
     free(aux);
     imprimeDatabase(sessoes);
+    printf("Sessão cadastrada com sucesso!\n");
     return sessoes;
 }
 
-Sessao * removeSessao(Sessao * sessoes, int * qtdSessoes){
-    int idDesejado = 0;
-    printf("digite o id que deseja remover: ");
-    scanf("%d", &idDesejado);
+Sessao * removeSessao(Sessao * sessoes, int * qtdSessoes, int sessaoDesejada){
     Sessao* contador = sessoes;
     do {
-        if(contador->id == idDesejado){
-            Sessao* proximo = contador->prox;
+        if(contador->id == sessaoDesejada){
             if(contador->ant != NULL) {
                 contador->ant->prox = contador->prox;
             }
@@ -139,17 +130,23 @@ Sessao * removeSessao(Sessao * sessoes, int * qtdSessoes){
             }
             Sessao* anterior = contador->ant;
             free(contador);
+
             --(*qtdSessoes);
-            contador = anterior;
-            while(contador != sessoes->ant){
-                --(contador->id );
-                contador = contador->ant;
+            Sessao * contadorNovo = anterior;
+            if (contadorNovo == NULL) {
+                contadorNovo = sessoes->ant;
+            }
+
+            while(contadorNovo != sessoes->ant){
+                --(contadorNovo->id );
+                contadorNovo = contadorNovo->ant;
             }
             imprimeDatabase(sessoes);
             return sessoes;
+            break;
         }
         contador = contador->prox;
     } while(contador != sessoes);
-    imprimeDatabase(sessoes);
-    return sessoes;
+
+    
 }

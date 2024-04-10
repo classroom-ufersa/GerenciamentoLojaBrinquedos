@@ -10,12 +10,6 @@ struct brinquedo{
     int idSessao;
 };
 
-struct sessao{
-    int id;
-    char categoria[25];
-    Sessao * prox;
-    Sessao * ant;
-};
 
 void contaBrinquedos(int * qtdBrinquedos){
     *qtdBrinquedos = 0;
@@ -86,7 +80,7 @@ void imprimeBrinquedoDatabase(Brinquedo * brinquedos, int qtdBrinquedos){
     fclose(dataBase);
 }
 
-void addBrinquedo(int * qtdBrinquedos, Sessao * sessoes){//falta checar se a sessao existe, e listar as qie existe
+Brinquedo * addBrinquedo(int * qtdBrinquedos,Brinquedo * brinquedos){//falta checar se a sessao existe, e listar as qie existe
     Brinquedo aux;
     printf("--- CADATRO DE BRINQUEDO ---\n");
     printf("Digite o nome: ");
@@ -108,8 +102,12 @@ void addBrinquedo(int * qtdBrinquedos, Sessao * sessoes){//falta checar se a ses
         printf("### Nao foi possivel abrir o arquivo! ###\n");
         exit(1);
     }
+    
+    brinquedos = realloc(brinquedos, (*qtdBrinquedos) * sizeof(Brinquedo));
     fprintf(dataBase, "%s\t%d-%d anos\t%.2f\t%d\t%d\n", aux.nome, aux.idadeMin, aux.idadeMax, aux.preco, aux.qtdEstoque,aux.idSessao);
+    
     fclose(dataBase);
+    return brinquedos;
 }
 
 int comparaNome(const void * p1, const void * p2){
@@ -168,10 +166,10 @@ Brinquedo * removeBrinquedo(Brinquedo * brinquedos, int * qtdBrinquedos, int ind
 }
 
 Brinquedo * removeBrinquedoSessao(Brinquedo * brinquedos, int qtdBrinquedos, int idDesejado){
-    ordenaId(brinquedos, qtdBrinquedos);
+
     int i =0;
     int inicio= 0;
-    
+    ordenaId(brinquedos, qtdBrinquedos);
     for(i = 0; i < qtdBrinquedos; i++){
         if (brinquedos[i].idSessao == idDesejado){
             inicio = i;

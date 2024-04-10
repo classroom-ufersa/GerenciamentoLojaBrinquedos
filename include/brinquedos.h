@@ -3,8 +3,6 @@
 #include <string.h>
 #include <ctype.h>
 
-typedef struct sessao Sessao;
-
 typedef struct brinquedo Brinquedo;
 
 void contaBrinquedos(int * qtdBrinquedos);
@@ -17,7 +15,7 @@ void imprimeBrinquedos(Brinquedo * brinquedos, int qtdBrinquedos);
 
 void imprimeBrinquedoDatabase(Brinquedo * brinquedos, int qtdBrinquedos);
 
-void addBrinquedo(int * qtdBrinquedos, Sessao * sessoes);
+Brinquedo * addBrinquedo(int * qtdBrinquedos, Brinquedo * brinquedos);
 
 int comparaNome(const void * p1, const void * p2);
 

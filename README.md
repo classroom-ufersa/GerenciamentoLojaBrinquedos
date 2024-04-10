@@ -62,7 +62,7 @@ ___
 ## **Execução do projeto**
 - Certifique-se de que você possui algum compilador C em sua máquina. Recomendamos o uso do GCC para compilar o código.
 ```
-gcc -o mainSes.exe ..\src\brinquedos.c ..\src\sessao.c .\sessoes_test.c
+gcc -o main.exe .\src\brinquedos.c .\src\sessao.c .\src\main.c
 ```
 ## **Participantes** 
 

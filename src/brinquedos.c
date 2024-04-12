@@ -1,5 +1,4 @@
 #include "../include/brinquedos.h"
-#include "../include/sessao.h"
 
 struct brinquedo{
     char nome[50];
@@ -50,6 +49,7 @@ Brinquedo * preencheDadosBrinquedos(Brinquedo * brinquedos, int qtdBrinquedos){
         i++;
     }
     fclose(dataBase);
+    ordenaNome(brinquedos, qtdBrinquedos);
     return brinquedos;
 }
 
@@ -79,7 +79,7 @@ void imprimeBrinquedoDatabase(Brinquedo * brinquedos, int qtdBrinquedos){
     fclose(dataBase);
 }
 
-Brinquedo * addBrinquedo(int * qtdBrinquedos,Brinquedo * brinquedos, int qtdSessao){
+Brinquedo * addBrinquedo(int * qtdBrinquedos,Brinquedo * brinquedos, int qtdSessao, Sessao * sessoes){
     Brinquedo aux;
     printf("--- CADATRO DE BRINQUEDO ---\n");
     printf("Digite o nome: ");
@@ -95,12 +95,11 @@ Brinquedo * addBrinquedo(int * qtdBrinquedos,Brinquedo * brinquedos, int qtdSess
     printf("Digite a quantidade em estoque: ");
     isNumInt(&aux.qtdEstoque);
     printf("Digite a qual sessao ele pertence: ");
+    imprimeSessao(sessoes);
     do{
+        printf("> ");
         isNumInt(&aux.idSessao);
-        if(aux.idSessao > qtdSessao || aux.idSessao <= 0){
-            printf("Selecione uma sessao existente:\n");
-        }
-    }while(aux.idSessao > qtdSessao || aux.idSessao <= 0 );
+    }while(!procuraSessao(aux.idSessao, sessoes));
     ++(*qtdBrinquedos);
     FILE * dataBase = fopen("../data/database.txt", "a");
     if (dataBase == NULL){
@@ -186,11 +185,10 @@ Brinquedo * removeBrinquedoSessao(Brinquedo * brinquedos, int qtdBrinquedos, int
         brinquedos = removeBrinquedo(brinquedos, &qtdBrinquedos, inicio);
     }
 
-    for (i = 0; i < qtdBrinquedos; i++){
-        if (brinquedos[i].idSessao >= idDesejado){
-            --(brinquedos[i].idSessao);
-        }
+    for (i = inicio; i < qtdBrinquedos; i++){
+        --(brinquedos[i].idSessao);
     }
+    ordenaNome(brinquedos, qtdBrinquedos);
     imprimeBrinquedoDatabase(brinquedos, qtdBrinquedos);
 
 }
@@ -212,60 +210,4 @@ void alteraEstoque(Brinquedo * brinquedos, int qtdBrinquedos){
 
     imprimeBrinquedoDatabase(brinquedos, qtdBrinquedos);
     printf("Estoque alterado!\n");
-}
-
-void isNumInt(int * valor){
-    char str[20];
-    int validador;
-
-    do {
-        scanf(" %[^\n]", str);
-        validador = verificarDados(str);
-        while (getchar() != '\n');
-        if(validador){
-            printf("Entrada invalida. Por favor, insira um numero inteiro: ");
-        }
-    } while(validador);
-
-    *valor = atoi(str);
-}
-
-void isNumFloat(float * valor){
-    char str[20];
-    int validador;
-    char *endptr;
-
-    do {
-        scanf(" %[^\n]", str);
-        validador = verificarDados(str);
-        while (getchar() != '\n');
-        if(validador){
-            printf("Entrada invalida. Por favor, insira um numero flutuante: ");
-        }
-    } while(validador);
-
-    *valor = strtof(str, &endptr);
-}
-
-int verificarDados(const char *str){
-    for(int i = 0; str[i] != '\0'; i++){
-        if(!isdigit(str[i]) && str[i] != '\n' && str[i] != '.'){
-            return 1;
-        }
-    }
-}
-
-void limpaTela(void){
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
-}
-
-void stringMinuscula(char *Nome){ 
-  int Contador; 
-  for (Contador = 0; Nome[Contador] != '\0'; Contador++)  { 
-    Nome[Contador] = tolower(Nome[Contador]); 
-  }
 }

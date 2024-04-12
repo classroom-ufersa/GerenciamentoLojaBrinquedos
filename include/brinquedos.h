@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+#include "sessao.h"
 
 /*Definição de uma estrutura do tipo brinquedo*/
 typedef struct brinquedo Brinquedo;
@@ -22,7 +19,7 @@ void imprimeBrinquedos(Brinquedo * brinquedos, int qtdBrinquedos);
 void imprimeBrinquedoDatabase(Brinquedo * brinquedos, int qtdBrinquedos);
 
 /*Função que insere novos brinquedos*/
-Brinquedo * addBrinquedo(int * qtdBrinquedos, Brinquedo * brinquedos, int qtdSessao);
+Brinquedo * addBrinquedo(int * qtdBrinquedos,Brinquedo * brinquedos, int qtdSessao, Sessao * sessoes);
 
 /*Função que realiza a comparação dos nomes*/
 int comparaNome(const void * p1, const void * p2);
@@ -47,20 +44,3 @@ Brinquedo * removeBrinquedoSessao(Brinquedo * brinquedos, int qtdBrinquedos, int
 
 /*Função que realiza alteração no estoque dos brinquedos*/
 void alteraEstoque(Brinquedo * brinquedos, int qtdBrinquedos);
-
-/*Função que analisa se a informação inserida é um número inteiro*/
-void isNumInt(int * valor);
-
-/*Função que analisa se a informação inserida é um float */
-void isNumFloat(float * valor);
-
-/*Função que verifica se há letras na informação inserida*/
-int verificarDados(const char *str);
-
-/*Função que limpa a tela*/
-void limpaTela(void);
-
-/*Função que realiza a tratativa de forma que todos os dados inseridos
-estejam formatados com letra minúscula
-*/
-void stringMinuscula(char *Nome);

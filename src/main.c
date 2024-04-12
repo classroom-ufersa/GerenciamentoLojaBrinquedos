@@ -9,6 +9,7 @@ int main(void){
     Sessao * sessoes = criaListaSessao();
     sessoes = preencheListaSessoes(sessoes, &qtdSessoes);
     brinquedos = preencheDadosBrinquedos(brinquedos, qtdBrinquedos);
+
     
     printf("---- BEM VINDO(A) AO SISTEMA DE GERENCIAMENTO DE BRINQUEDO ---\n");
 
@@ -32,10 +33,8 @@ int main(void){
             break;
         case 2:
             limpaTela();
-            imprimeSessao(sessoes);
-            brinquedos = addBrinquedo(&qtdBrinquedos, brinquedos, qtdSessoes);
+            brinquedos = addBrinquedo(&qtdBrinquedos, brinquedos, qtdSessoes, sessoes);
             preencheDadosBrinquedos(brinquedos, qtdBrinquedos);
-            ordenaNome(brinquedos, qtdBrinquedos);
             break;
         case 3:
             limpaTela();
@@ -72,11 +71,9 @@ int main(void){
             imprimeSessao(sessoes);
             printf("Digite o id que deseja remover: ");
             do{
-             isNumInt(&idDesejado);
-            if(idDesejado > qtdSessoes || idDesejado <= 0){
-            printf("Selecione uma sessao existente:\n");
-        }
-         }while(idDesejado > qtdSessoes || idDesejado <= 0 );
+                printf("> ");
+                isNumInt(&idDesejado);
+            }while(!procuraSessao(idDesejado, sessoes));
             sessoes = removeSessao(sessoes, &qtdSessoes, idDesejado);
             brinquedos = removeBrinquedoSessao(brinquedos, qtdBrinquedos, idDesejado);
             break;

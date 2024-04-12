@@ -1,5 +1,4 @@
 #include "../include/sessao.h"
-#include "../include/brinquedos.h"
 
 struct sessao{
     int id;
@@ -115,10 +114,21 @@ Sessao * adicionaSessao(Sessao * sessoes, int * qtdSessoes){
     return sessoes;
 }
 
-Sessao * removeSessao(Sessao * sessoes, int * qtdSessoes, int sessaoDesejada){
+
+Sessao * procuraSessao(int idSessao,Sessao * sessoes){
     Sessao* contador = sessoes;
     do {
-        if(contador->id == sessaoDesejada){
+        if(contador->id == idSessao){
+            return contador;
+        }
+        contador = contador->prox;
+    } while(contador != sessoes);
+
+    return 0;
+}
+
+Sessao * removeSessao(Sessao * sessoes, int * qtdSessoes, int sessaoDesejada){
+    Sessao* contador = procuraSessao(sessaoDesejada, sessoes);
             if(contador->ant != NULL) {
                 contador->ant->prox = contador->prox;
             }
@@ -142,11 +152,61 @@ Sessao * removeSessao(Sessao * sessoes, int * qtdSessoes, int sessaoDesejada){
                 contadorNovo = contadorNovo->ant;
             }
             imprimeDatabase(sessoes);
-            return sessoes;
-            break;
-        }
-        contador = contador->prox;
-    } while(contador != sessoes);
+            return sessoes; 
+}
 
-    
+void isNumInt(int * valor){
+    char str[20];
+    int validador;
+
+    do {
+        scanf(" %[^\n]", str);
+        validador = verificarDados(str);
+        while (getchar() != '\n');
+        if(validador){
+            printf("Entrada invalida. Por favor, insira um numero inteiro: ");
+        }
+    } while(validador);
+
+    *valor = atoi(str);
+}
+
+void isNumFloat(float * valor){
+    char str[20];
+    int validador;
+    char *endptr;
+
+    do {
+        scanf(" %[^\n]", str);
+        validador = verificarDados(str);
+        while (getchar() != '\n');
+        if(validador){
+            printf("Entrada invalida. Por favor, insira um numero flutuante: ");
+        }
+    } while(validador);
+
+    *valor = strtof(str, &endptr);
+}
+
+int verificarDados(const char *str){
+    for(int i = 0; str[i] != '\0'; i++){
+        if(!isdigit(str[i]) && str[i] != '\n' && str[i] != '.'){
+            return 1;
+        }
+    }
+}
+
+void limpaTela(void){
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
+void stringMinuscula(char *Nome){ 
+  int Contador; 
+  for (Contador = 0; Nome[Contador] != '\0'; Contador++)  { 
+    Nome[Contador] = tolower(Nome[Contador]); 
+  }
 }
